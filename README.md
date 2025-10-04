@@ -1,30 +1,63 @@
-# Estrutura inicial do projeto SkillUp
 
-Este projeto é uma plataforma de estudo gamificada, com front end e back end organizados em pastas separadas.
+# SkillUp - Plataforma de Estudo Gamificada
 
-## Estrutura de diretórios
+Este projeto é uma plataforma de estudo gamificada, com separação clara entre backend (API) e frontend (interface web).
 
-- `backend/` - Código do servidor, integrações com banco de dados, funções e testes de terminal
-  - `src/` - Código-fonte principal do backend
-  - `main/` - Scripts para testes em terminal
-  - `database/` - Integração e scripts de banco de dados
-  - `functions/` - Funções de negócio e utilitários
+## Estrutura de Diretórios
 
-- `frontend/` - Código do cliente (web), componentes, páginas e serviços
-  - `src/` - Código-fonte principal do frontend
-  - `main/` - Scripts para testes em terminal
-  - `components/` - Componentes reutilizáveis
-  - `pages/` - Páginas da aplicação
-    - `estudos/` - Aba para estudos
-    - `questoes/` - Aba para questões
-  - `services/` - Integração com APIs e serviços
-  - `assets/` - Imagens, ícones e outros recursos estáticos
+```
+SkillUp/
+├── backend/
+│   └── app/
+│       ├── routers/
+│       ├── schemas/
+│       ├── database/
+│       ├── __init__.py
+│       └── main.py
+│   ├── requirements.txt
+│   └── .env
+├── frontend/
+│   ├── index.html
+│   ├── pages/
+│   ├── styles/
+│   ├── scripts/
+│   └── assets/
+├── tests/
+└── README.md
+```
 
-- `tests/` - Testes automatizados gerais
+### Backend (FastAPI)
+- Estruturado em `app/` com subpastas para rotas (`routers`), modelos de dados (`schemas`) e integração com banco de dados (`database`).
+- Utiliza **FastAPI** para a API, **SQLAlchemy** para ORM e **Uvicorn** como servidor ASGI.
+- Dependências listadas em `requirements.txt`.
+- Variáveis sensíveis e configurações em `.env`.
 
-- `.github/` - Instruções e automações do projeto
+### Frontend (HTML/CSS/JS)
+- Estrutura clássica para projetos web estáticos.
+- `index.html` como página principal.
+- `pages/` para páginas adicionais (ex: estudos, questões).
+- `styles/` para CSS, `scripts/` para JS, `assets/` para imagens e ícones.
 
-## Próximos passos
-- Definir tecnologias e frameworks para cada parte (ex: React, Node.js, Express, banco de dados)
-- Implementar as primeiras rotas e páginas
-- Configurar integração contínua e testes
+### Testes
+- A pasta `tests/` pode ser usada para scripts e automações de teste.
+
+## Tecnologias Utilizadas
+- **FastAPI**: Framework web moderno e rápido para APIs em Python.
+- **Uvicorn**: Servidor ASGI leve e eficiente para rodar o FastAPI.
+- **SQLAlchemy**: ORM para integração com bancos de dados relacionais.
+
+## Como rodar o backend
+1. Instale as dependências:
+   ```bash
+   pip install -r backend/requirements.txt
+   ```
+2. Execute o servidor:
+   ```bash
+   uvicorn backend.app.main:app --reload
+   ```
+
+## Como rodar o frontend
+Basta abrir o arquivo `frontend/index.html` no navegador ou servir a pasta `frontend/` com um servidor estático.
+
+---
+Sinta-se à vontade para adaptar a estrutura conforme o crescimento do projeto!
