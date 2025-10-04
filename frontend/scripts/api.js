@@ -1,1 +1,0 @@
-// Funções para comunicação com o backend
