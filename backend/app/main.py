@@ -1,7 +1,7 @@
 # Ponto de entrada da API FastAPI
 from fastapi import FastAPI
-from autentique_rotas import roteador_autentique
-from cursos_rotas import roteador_cursos 
+from database.autentique_rotas import roteador_autentique
+from database.cursos_rotas import roteador_cursos
 
 app = FastAPI(
     title="SkillUp API",

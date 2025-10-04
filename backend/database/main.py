@@ -17,7 +17,7 @@ oauth2_schema = OAuth2PasswordBearer(tokenUrl="auth/login-form")
 
 
 from autentique_rotas import roteador_autentique
-from ordens_rotas import roteador_ordens
+from database import cursos_rotas
 
 app.include_router(roteador_autentique)
-app.include_router(roteador_ordens)
+app.include_router(cursos_rotas)

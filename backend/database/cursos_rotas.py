@@ -5,9 +5,9 @@ from sqlalchemy.orm import Session
 from typing import List
 
 # Importando as dependências, modelos e schemas relevantes
-from dependecis import pegar_sessao, verificar_token
-from models import Usuario, Curso
-from schemas import CursoCreate, Curso as CursoSchema
+from .dependecis import pegar_sessao, verificar_token
+from .models import Usuario, Curso
+from .schemas import CursoCreate, Curso as CursoSchema
 
 # Criamos um novo roteador para os cursos
 # Todos os endpoints aqui exigirão um token válido (Depends(verificar_token))

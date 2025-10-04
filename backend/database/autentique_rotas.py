@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
-from models import Usuario
-from dependecis import pegar_sessao , verificar_token
-from main import bcrypt_context, ALGORITHM , ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY
-from schemas import UsuarioSchemas , LoginSchemas
+from .models import Usuario
+from .dependecis import pegar_sessao, verificar_token, oauth2_schema, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, bcrypt_context
+from .schemas import UsuarioCreate as UsuarioSchemas, Login as LoginSchemas
 from sqlalchemy.orm import Session
 from jose import jwt, JWTError
 from datetime import datetime, timedelta, timezone
@@ -40,10 +39,10 @@ async def criar_conta(usuario_schema:UsuarioSchemas,session:Session = Depends(pe
         raise HTTPException(status_code= 400,detail="Email do usuario já cadastrado")
     else:
         senha_crip = bcrypt_context.hash(usuario_schema.senha)
-        novo_usuario = Usuario(usuario_schema.nome, usuario_schema.email, senha_crip, usuario_schema.ativo, usuario_schema.admin)
+        novo_usuario = Usuario(nome=usuario_schema.nome, email=usuario_schema.email, senha=senha_crip, ativo=getattr(usuario_schema, 'ativo', True), admin=getattr(usuario_schema, 'admin', False))
         session.add(novo_usuario)
         session.commit()
-        return{"mensagem":f"usuario cadastrado com sucesso {usuario_schema.email}."}
+        return {"mensagem": f"usuario cadastrado com sucesso {usuario_schema.email}."}
     
 @roteador_autentique.post("/login")
 async def login(login_schema: LoginSchemas,session:Session = Depends(pegar_sessao)):
@@ -80,5 +79,13 @@ async def use_refresh_token(usuario:Usuario = Depends(verificar_token)):
             "token_type": "Bearer"
             }
 
-@roteador_autentique.delete("/auth/delete-usuario")
+@roteador_autentique.delete("/delete-usuario")
 async def deletar_usuario(usuario:Usuario = Depends(verificar_token)):
+    # Remove o usuário logado
+    # Observação: aqui usamos a própria sessão via dependência pegar_sessao quando necessário
+    from .dependecis import pegar_sessao
+    session = next(pegar_sessao())
+    session.delete(usuario)
+    session.commit()
+    session.close()
+    return {"mensagem": "Usuário removido com sucesso"}
