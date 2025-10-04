@@ -1,9 +1,18 @@
 # Ponto de entrada da API FastAPI
 from fastapi import FastAPI
+from autentique_rotas import roteador_autentique
+from cursos_rotas import roteador_cursos 
 
-app = FastAPI()
+app = FastAPI(
+    title="SkillUp API",
+    version="0.1.0",
+    description="API da plataforma de educação e desenvolvimento com foco na inclusão de pessoas neurodivergentes."
+)
 
-# Importe e inclua suas rotas aqui
-# from .routers import usuarios, cursos
-# app.include_router(usuarios.router)
-# app.include_router(cursos.router)
+app.include_router(roteador_autentique)
+app.include_router(roteador_cursos)
+
+@app.get("/")
+def health_check():
+    """Endpoint para verificar se a API está funcionando."""
+    return {"status": "ok"}

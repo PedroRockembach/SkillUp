@@ -1,39 +1,52 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional
+from typing import Optional, List
 
-class UsuarioSchemas(BaseModel): # pega os dados para preencher seu bando de dados 
-    nome:str
-    email:EmailStr
-    senha:str
-    ativo:Optional[bool]
-    admin:Optional[bool]
-    class Config: # Lira disse que cria uma conexão com o bando de dados la
-        from_attributes = True
+# --- Schemas de Usuário (mantemos a base) ---
+class UsuarioBase(BaseModel):
+    nome: str
+    email: EmailStr
 
-class PedidoSchemas(BaseModel):
-    id_usuario: int
-    class Config:
-        from_attributes = True
-
-class LoginSchemas(BaseModel):
-    email:EmailStr
+class UsuarioCreate(UsuarioBase):
     senha: str
-    class Config:
-        from_attributes = True
 
-class ItemPedidoSchema(BaseModel):
-    quantidade : int
-    sabor : str
-    tamanho : str
-    preco_unitario : float
+class Usuario(UsuarioBase):
+    id: int
+    ativo: bool
+    admin: bool
 
     class Config:
         from_attributes = True
 
-class ResponsePedidosSchema(BaseModel):
-    id : int
-    status : str
-    preco : float
+class Login(BaseModel):
+    email: EmailStr
+    senha: str
+
+# --- Novos Schemas para Cursos e Mídias ---
+class MidiaBase(BaseModel):
+    tipo: str
+    conteudo_ou_url: str
+
+class MidiaCreate(MidiaBase):
+    pass
+
+class Midia(MidiaBase):
+    id: int
+    curso_id: int
     
+    class Config:
+        from_attributes = True
+
+class CursoBase(BaseModel):
+    titulo: str
+    descricao: Optional[str] = None
+
+class CursoCreate(CursoBase):
+    pass
+
+class Curso(CursoBase):
+    id: int
+    criador_id: int
+    midias: List[Midia] = [] # Um curso terá uma lista de mídias
+
     class Config:
         from_attributes = True
